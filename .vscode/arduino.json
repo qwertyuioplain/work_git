@@ -1,0 +1,6 @@
+{
+    "programmer": "ArduinoISP",
+    "board": "arduino:avr:uno",
+    "port": "/dev/ttyACM0",
+    "sketch": "arduino/2.3.1/2.3.1.ino"
+}

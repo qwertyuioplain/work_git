@@ -1,4 +1,3 @@
-
 float val = (87.8+3.25)/2;  //閾値を設定
 
 int lux_threshold(float lux,int th_val){
