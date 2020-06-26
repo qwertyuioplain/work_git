@@ -2,7 +2,7 @@ float val = 2.5;  //閾値を設定
 
 //条件分岐
 int change(float v,float th_val){
-  return th_val < v ? HIGH : LOW;
+  return th_val <= v ? HIGH : LOW;
 }
 
 void setup() {
