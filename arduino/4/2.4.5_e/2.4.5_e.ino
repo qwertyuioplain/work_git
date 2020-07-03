@@ -10,7 +10,7 @@ void setup() {
     割り込みサービスルーチン blink 関数を実行(2 番目の引数=関数名)
     (例)割り込み要因としてスイッチの状態が“LOW”のときに発生(3 番目の引数)
     */
-    attachInterrupt(0, blink, LOW);
+    attachInterrupt(0, blink, RISING);
 }
 
 /* メイン関数 */
