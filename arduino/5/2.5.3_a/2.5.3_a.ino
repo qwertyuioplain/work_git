@@ -1,9 +1,9 @@
 unsigned long timePrev,time_count = 0;//時間保管変数
 int count = 0;//カウント変数
-float lo_sum = 0;//の合計値
-float lo_max = 35;
-float lo_avg;
-float val;
+float lo_sum = 0;//照度の合計値
+float lo_max = 35;//照度の最大値
+float lo_avg;//照度の平均値
+float val;//出力値
 //温度の平均値を返す関数
 float average_data(){
     return lo_sum/count;
@@ -24,14 +24,14 @@ void loop() {
     count++;//加算回数を記録
     //500msごとに分岐
     if(timeNow - timePrev >= 500){
-        lo_avg = average_data();
+        lo_avg = average_data();//照度の平均値を取得
         Serial.println(lo_avg);//平均温度をシリアル通信で表示
         timePrev = timeNow;//時間の更新
         lo_sum = 0;//初期化
         count = 0;//初期化
     }
-    val = 255*(lo_avg/35);
-    analogWrite(9,val);
+    val = 255*(lo_avg/35);//出力値を計算
+    analogWrite(9,val);//アナログ出力
     //15秒でシリアル通信を終了する
     if (timeNow - time_count > 15000){
         Serial.println("end!!");
