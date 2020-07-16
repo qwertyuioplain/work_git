@@ -21,6 +21,7 @@ void serialEvent(Serial p) { // p にはデータが到着したシリアルポ�
       low0 = p.read(); // 受信バッファから 1 バイト読み込み
       high1 = p.read(); // 受信バッファから 1 バイト読み込み
       low1 = p.read(); // 受信バッファから 1 バイト読み込み
+      //1バイトを元に修正
       val0 = (high0<<8)+low0;
       val1 = (high1<<8)+low1;
       p.clear(); // 念のため受信バッファをクリア

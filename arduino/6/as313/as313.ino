@@ -11,6 +11,7 @@ void loop()
   timeNow = millis(); // 現在の経過時間
   val0 = analogRead(0); // A0 ピンの AD 変換結果を取得 (0-1023)
   val1 = analogRead(1); // A1 ピンの AD 変換結果を取得 (0-1023)
+  //1バイトに修正
   high0 = val0 >> 8;
   low0 =  val0 & 255;
   high1 = val1 >> 8;
