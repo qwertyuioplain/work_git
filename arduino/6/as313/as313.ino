@@ -17,7 +17,7 @@ void loop()
   high1 = val1 >> 8;
   low1 =  val1 & 255;
   
-  if ( timeNow - timePrev >= 16 ) { // 16ms ごとに実行
+  if ( timeNow - timePrev >= 50 ) { // 16ms ごとに実行
     Serial.write( 'H' ); // 文字 ’H’ をバイナリデータとして送信
     Serial.write(high0); // 1 バイトのバイナリデータとして値を送信
     Serial.write(low0); // 1 バイトのバイナリデータとして値を送信

@@ -5,7 +5,7 @@ int high0,high1,low0,low1;
 void setup()
 {
   size(1024, 1024); // サイズ 1024× 1024 のウィンドウ生成
-  port = new Serial(this, "/dev/ttyACM0", 9600);//Serial クラスのインスタンス生成
+  port = new Serial(this, "/dev/ttyUSB0", 9600);//Serial クラスのインスタンス生成
 }
 void draw()
 {
