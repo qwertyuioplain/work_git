@@ -24,15 +24,21 @@ java バイトコードを実行
 クラスから生成された実体で、クラスは設計図。
 インスタンス生成は、メモリに記憶領域を確保すること
 
+フィールドとメソッドはインスタンスに所属する。インスタンスは独立する。
+クラスフィールドとクラスメソッドは、クラスに所属する。staticを用いる。
+また、インスタントは無関係であるため、独立して使用できる。
+
+コンストラクタ
+インスタンスを生成時に一度だけ呼び出される特殊なメソッド
+インスタンスの初期化に関する処理をまとめ、自動化することができる、初期化忘れもなくなる。
+
 アクセス制御
 フィールドやメソッドのアクセスを制御する。
 アクセス修飾子
 private 自分のクラス内のみ
 なし　自分のパッケージ内のみ
-protected 自分のパッケージ内のサブクラスまで
+protected 異なるパッケージ内のサブクラスからのみ
 public すべて
-
-
 
 カプセル化
 モノが持つ情報のうち外部の世界が知る必要のない情報を隠し、保守性を高める
@@ -41,12 +47,125 @@ public すべて
 
 継承
 モノの種類の共通点と相違点を体系的に整理する仕組み
+メリットは、クラスを再利用する。また、サブクラスのインスタンスはスーパークラスのメソッド、フィールドを扱うことができる。
+class B extend A Aはスーパークラスで、Bはサブクラス、BはAであるが成り立つ。
+サブクラスのインスタンスは、サブクラスとスーパークラスで定義したメンバをもつ
+サブクラスは一つのスーパークラスをもつ
+スーパークラスは複数のサブクラスを持つことができる。
 
 ポリモーフィズム
 モノとモノとのやり取りを共通化する仕組み
+異なる処理を同じ呼び出し方で読みだすことができる。独立性が高い。
+メリットは、変更するべきことが発生した場合、変更箇所を少なくすることができる。
+変更に強いプログラミングを作成できる。
+
+オーバーライド
+サブクラスにスーパークラスと同じ名前のメソッドを定義できる。
+
+抽象クラス
+abstract class A
+abstract　メソッド
+classs B extends A
+オーバーライドされることを前提としたクラス、インスタンスを生成しない。
+抽象クラスを使うことで無駄なメソッドの処理を省略できる。
+
+インターフェース
+interface A
+class B implements A
+継承の関係がないクラスでもポリモーフィズムを実現できる。暗黙的に抽象クラスである。
+
+例外
+try {}
+catch(例外クラス){}
+ArrayIndexOutOfBoundsException　配列の要素数を超えた
+FileNotfoundException　ファイルがみつからない
+IllegalArgumentException　引数が異常な値　
+OutOfMemoryError　メモリが足りない
+NumberFormatException 数値のフォーマットが正常でない
+IoException IOエラー
+
+ファイル分割
+クラスとファイル名を同じにする
+
+パッケージ
+package A
+import A
+直下クラスまでしかしていできない。
+パッケージとディレクトリは同じ名前にする。
+
+スレッド
+class A extends Thread{}
+メソッド
+run() スレッドで実行するコード
+start() runメソッドが実行される
+sleep(a)  aミリ秒停止する。
+join() スレッドが終了まで待機
+synchronized 垂直同期　これをつけたメソッドは、あるスレッドからの処理中、それ以外からのスレッドから処理ができなくなる。
 
 code
 
+Objectクラス
+全てのクラスはObjectクラスのサブクラス
+
+Stringクラス
+
+Mathクラス
+
+Randamクラス
+
+BufferedReaderクラス
+
+Integerクラス
+Int parseInt 文字列を整数値に変換
+
+FileReaderクラス
+コンスタンスでファイルを読み込む
+
+Swing
+
+コンポーネント　GUIの部品
+ペイン　GUIの層
+
+JFrameクラス　フレーム関係
+setTitle("") フレームタイトル
+setsize() サイズ
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)　終了設定
+f.setVisble(true)　フレーム表示
+getContentPane()　コンテンツペインを取得
+
+JButtonクラス　ボタン
+コンスタンスで　文字表示
+setText() ボタンに文字を表示
+addActionListener(イベント処理するリスナ)　リスナをソースに登録　this クラス自身
+getText()　文字列を返す
+
+Containerクラス　コンポーネント関係
+add() コンテンツペインに追加
+setLayout() レイアウトマネージャーを設定
+
+JPanel クラス
+setLayout() レイアウトマネージャーを設定
+add()　パネルにコンポーネントを追加
+
+BorderLayoutクラス　レイアウトマネージャー
+フィールド　NORTH　SOUTH　WEST　EAST　CENTER
+
+GridLayoutクラス　レイアウトマネージャー
+コンスタンス　(縦,横)　格子状に配置
+
+FlowLayout レイアウトマネージャー
+
+ActionListener インターフェース型　イベントリスナ
+actionPerfomed(ActionEvent e) イベントが起きた時の処理
+
+ActionEvent　e クラス　アクションイベント
+e.getSource() クラスのインスタンスを習得
+
+JLabelクラス　テキスト表示
+setText() テキスト読み込み
+
+JTextField
+setColumns()
 
 
 
