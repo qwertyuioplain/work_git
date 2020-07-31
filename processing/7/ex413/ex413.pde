@@ -3,7 +3,7 @@ Serial port;
 int val0, val1;
 void setup(){
     size(500, 500);
-    port = new Serial(this, "/dev/ttyUSB0", 9600);
+    port = new Serial(this, "/dev/ttyACM0", 9600);
 }
 void draw(){
     background(0);
