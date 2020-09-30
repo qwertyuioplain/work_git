@@ -1,11 +1,11 @@
 import processing.serial.*; // Serial ライブラリを取り込む
 Serial port; // Serial クラスのオブジェクトを宣言
-int val0;
-int t;
+float val0;
+float t;
 int high0,low0;
 float x,y;//座標
-int t_max = 31;//グラフ縦幅の温度最大値
-int t_low = 23;//グラフ縦幅の温度最小値
+int t_max = 32;//グラフ縦幅の温度最大値
+int t_low = 25;//グラフ縦幅の温度最小値
 void setup(){
   size(800,300); // サイズ 800×300 のウィンドウ生成
   //座標の初期化座標
@@ -34,10 +34,12 @@ void serialEvent(Serial p) { // p にはデータが到着したシリアルポ�
       high0 = p.read(); // 受信バッファから 1 バイト読み込み
       low0 = p.read(); // 受信バッファから 1 バイト読み込み
       //1バイトを元に修正
-      val0 = (high0<<8)+low0;
+      val0 = (float)((high0<<8)+low0)/100;//受信データ
       t = (val0*5000/1024-600)/10;//温度計算
       p.clear(); // 念のため受信バッファをクリア
       println("<-");// データ受信タイミング(確認用)
+      println(val0);
+      println(t);
     }
   }
 }
