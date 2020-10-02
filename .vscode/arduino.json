@@ -2,5 +2,5 @@
     "programmer": "ArduinoISP",
     "board": "arduino:avr:uno",
     "port": "/dev/ttyACM0",
-    "sketch": "arduino/6/as323/as323.ino"
+    "sketch": "arduino/6/as63/as63.ino"
 }
