@@ -3,6 +3,7 @@ const int echo = 8; //Echo ピンをデジタル 8 番に接続
 const int temp = 25;//温度
 unsigned long interval; //Echo のパルス幅
 unsigned int d;//距離
+int val,val1,val2;
 //setup
 void setup() {
     Serial.begin(9600);
@@ -26,9 +27,17 @@ void loop() {
     //Echo 信号が HIGH である時間(μs)を pulseIn 関数で計測
     //23071μs 以上経過したら、超音波が反射して返ってこないとみなして 0 を返す
     interval = pulseIn(echo, HIGH, 23071);//マイクロ秒
-
-    d = (unsigned int)(distance_calc()*100);//cmに変換
-
-    Serial.println(d); //超音波の往復時間をシリアルモニタに表示
+    d = (distance_calc()*100);//cmに変換
+    val = (int)d;//int型に変更
+    
+    if ( Serial.available() > 0 ) { //シリアル通信による送信要求を受取時
+        val1 = (int)val>>8; // 0-255 の値に変換
+        val2 = (int)val&255; // 0-255 の値に変換
+        Serial.write( 'H' ); // 文字 ’H’ をバイナリデータとして送信
+        Serial.write(val1); // 1 バイトのバイナリデータとして値を送信
+        Serial.write(val2); // 1 バイトのバイナリデータとして値を送信
+    }
+    
+    Serial.println(val); //超音波の往復時間をシリアルモニタに表示
     delay(60);//次の Trig 信号の出力まで 60ms 待機
 }
