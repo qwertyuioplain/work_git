@@ -37,10 +37,10 @@ void loop() {
   dist = distance();             //距離を計測
   Serial.println(dist);          //距離をシリアルモニタに出力
   
-  if (dist > 0&&dist <= 40) {               //
+  if (dist > 0&&dist <= 40) {               //障害物がある場合停止
     motors.setLeftSpeed(0);
     motors.setRightSpeed(0);
-  } else if(dist > 40 ) {                   //
+  } else if(dist > 40 ) {                   //障害物がない場合右に回転
     motors.setLeftSpeed(100);
     motors.setRightSpeed(-100);
   }
