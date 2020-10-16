@@ -7,7 +7,9 @@ const int echo = 4;              //EchoピンをArduinoの4番ピンに
 ZumoMotors motors;               //ZumoMotorsクラスのインスタンス生成
 Pushbutton button(ZUMO_BUTTON);  //Pushbuttonクラスのインスタンスを生成
 
-unsigned long time_now,time_int;
+unsigned long time_now,time_int;　//時間
+
+int mode = 0; //ロボットの動作モード
 
 //距離を計測
 int distance() {
@@ -33,6 +35,7 @@ void setup() {
   pinMode(echo, INPUT);          //echoを入力ポートに設定
   time_int = millis();
   time_now = 0;
+  mode = 0;
 }
 //指定の時間経過を知らせる関数
 int wait_time(int time){
@@ -63,15 +66,33 @@ void loop() {
   dist = distance();             //距離を計測
   Serial.println(dist);          //距離をシリアルモニタに出力
   
-  if (dist > 0&&dist <= 40) {               //障害物がある場合
-    if(wait_time(500)){//正面に向くまで少しだけ回転
-      motor.setLeftSpeed(0);
-      motor.setRightSpeed(0);
+  switch (mode){
+  case 0://回転検知モード
+    if (dist > 0&&dist <= 40) {               //障害物がある場合
+      if(wait_time(500)){//正面に向くまで少しだけ回転
+        motor.setLeftSpeed(0);
+        motor.setRightSpeed(0);
+      }
+      motor.setLeftSpeed(100);  //右に回転
+      motor.setRightSpeed(-100);
+    } else if(dist > 40 ) {                   //障害物がない場合右に回転
+      motors.setLeftSpeed(100); //右に回転
+      motors.setRightSpeed(-100);
+      if(wait_time(4000)){//4秒経過しても障害物がない場合
+        mode = 1;//移動モードに移行
+      }
     }
-    motor.setLeftSpeed(100);  //右に回転
-    motor.setRightSpeed(-100);
-  } else if(dist > 40 ) {                   //障害物がない場合右に回転
-    motors.setLeftSpeed(100);
-    motors.setRightSpeed(-100);
+    break;
+  case 1://前進モード
+    motors.setLeftSpeed(100);//前進
+    motors.setRightSpeed(100);
+    if(wait_time(2000)){//移動二秒後
+      mode = 0; //回転検知モードに移行
+    }
+    break;
+  default:
+    break;
   }
+
+
 }
