@@ -10,24 +10,24 @@ LSM303 compass;
 
 unsigned long timeInit_G, timeNow_G, timePrev_G; //  スタート時間，経過時間, 1回前
 int motorR_G, motorL_G;  // 左右のZumoのモータに与える回転力
-int mode_G=0;
-float mx=0, my=0, mz=0;
-float ax=0, ay=0, az=0;
-float heading_G = 0;
-int direction = 90;
-int count = 0;
+int mode_G=0;//ロボットの動作モード
+float mx=0, my=0, mz=0;//各方向の磁気センサ値
+float ax=0, ay=0, az=0;//各方向の加速度値
+float heading_G = 0;//方向
+int direction = 90;//方向（東）
+int count = 0;//カウント値
 
 void setup()
 {
   Serial.begin(9600);
   Wire.begin();
   setupCompass();
-  button.waitForButton();
+  button.waitForButton(); //ボタン待機
   calibrationCompass();//二次元的キャリブレーション
-  button.waitForButton();
-  mode_G = 0;
-  timeInit_G = millis();
-  timePrev_G=0;
+  button.waitForButton();//ボタン待機
+  mode_G = 0;//初期化
+  timeInit_G = millis();//初期時間取得
+  timePrev_G=0;//初期化
 }
 
 float sum_e = 0;
@@ -60,7 +60,7 @@ void loop()
     return;
   }
 
-  compass.read();
+  compass.read();//磁気加速度センサの値取得
   compass.m_min.x = min(compass.m.x,compass.m_min.x);  compass.m_max.x = max(compass.m.x,compass.m_max.x);
   compass.m_min.y = min(compass.m.y,compass.m_min.y);  compass.m_max.y = max(compass.m.y,compass.m_max.y);
   compass.m_min.z = min(compass.m.z,compass.m_min.z);  compass.m_max.z = max(compass.m.z,compass.m_max.z);
@@ -79,7 +79,7 @@ void loop()
     timePrev_G = 0;
   }
   switch (mode_G) {
-    case 0:
+    case 0://初期化
       mode_G = 1;
       sum_e = 0.0;
       direction = 90;
@@ -92,29 +92,29 @@ void loop()
       }
       break;
     case 2:// 停止
-      if (waitfor(2000)) {
+      if (waitfor(2000)) {//２秒後の処理
         sum_e = 0.0;
-        mode_G = 1;
-        count++;
+        mode_G = 1;//方向設定へ
+        count++;//停止するたびカウントを増やす
         switch (count){
         case 1:
-          direction = 270;
+          direction = 270;//西方向
           break;
         case 2:
-          direction = 180;
+          direction = 180;//南方向
           break;
         case 3:
-          direction = 0;
+          direction = 0;//北方向
           break;
         default:
-          mode_G = 99;
+          mode_G = 99;//すべての処理の終了後
           break;
         }
       }
-      speed0 = 0;
-      diff = turnTo(direction);
+      speed0 = 0;//停止
+      diff = turnTo(direction);//方向の差分取得
       break;
-    case 99:
+    case 99://処理の終了待機モード
       speed0 = 0;
       diff = 0;
     break;
@@ -123,12 +123,12 @@ void loop()
       diff = 0;
     break;
   }
-  motorL_G = speed0+diff;
-  motorR_G = speed0-diff;
+  motorL_G = speed0+diff;//左速度
+  motorR_G = speed0-diff;//右速度
   motors.setSpeeds(motorL_G, motorR_G);
-  timePrev_G=timeNow_G;
+  timePrev_G=timeNow_G;//時間取得
 }
-
+//待機関数
 int waitfor( unsigned long period )
 {
   static int flagStart = 0; // 0:待ち状態, 1:現在計測中

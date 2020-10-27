@@ -14,8 +14,8 @@ int mode_G=0;
 float mx=0, my=0, mz=0;
 float ax=0, ay=0, az=0;
 float heading_G = 0;
-int direction = 90;
-int direction_Int = 0;
+int direction = 0;//ロボットの方向
+int direction_Int = 0;//ロボットの初期の方向
 int count = 0;
 
 void setup()
@@ -81,30 +81,30 @@ void loop()
   }
   switch (mode_G) {
     case 0:
-      mode_G = 3;
+      mode_G = 3;//方向切り替えモードへ
       sum_e = 0.0;
-      direction_Int = turnTo(0);
-      direction = direction_Int;
+      direction_Int = turnTo(0);//方向保存
+      direction = direction_Int;//方向入力
       count = 1;
       speed0 = 0;
       diff = 0;
     break; 
     case 1://回転
       speed0 = 0.0;
-      diff = turnTo(direction);
-      if (abs(direction-heading_G)<=5) {
-        mode_G = 4;
+      diff = turnTo(direction);//方向の差分を取得
+      if (abs(direction-heading_G)<=5) {//方向の差分が一定以下の場合
+        mode_G = 4;//停止モードへ
       }
       break;
     case 2://方向切り替え
       sum_e = 0.0;
-      mode_G = 1;
-      switch (count){
-      case 1:
+      mode_G = 1;//回転モードへ
+      switch (count){//方向を切り替える
+      case 1://反対方向
         direction = (180+direction_Int)%360;
         count = 2;
         break;
-      case 2:
+      case 2://元の方向
         direction = direction_Int;
         count = 1;
         break;
@@ -117,13 +117,13 @@ void loop()
     case 3: //  発進
       speed0 = 100;
       diff = 0;
-      if(waitfor(2000)){
+      if(waitfor(2000)){//二秒後方向切り替えモードへ
         mode_G = 2;
         speed0 = 0;
       }
       break;
     case 4://停止
-      if(waitfor(2000)){
+      if(waitfor(2000)){//二秒後発進モードへ
         mode_G = 3;
       }
       speed0 = 0;

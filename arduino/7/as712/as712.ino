@@ -78,7 +78,7 @@ void loop() {
     } else if(dist > 40 ) {                   //障害物がない場合右に回転
       motors.setLeftSpeed(100); //右に回転
       motors.setRightSpeed(-100);
-      if(wait_time(4000)){//4秒経過しても障害物がない場合
+      if(wait_time(4000)){//4秒経過しても障害物がない場合移行
         mode = 1;//移動モードに移行
       }
     }
