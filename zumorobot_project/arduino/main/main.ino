@@ -19,7 +19,7 @@ float heading_G = 0;
 int direction = 0;//ロボットの方向
 int direction_Int = 0;//ロボットの初期の方向
 int count = 0;
-
+void dataUpdate();
 
 void setup()
 {
@@ -28,21 +28,73 @@ void setup()
   setupCompass();
   button.waitForButton();//ホームボタン押されるまで待機
   calibrationCompass();
-  button.waitForButton();
+  button.waitForButton();//ホームボタン押されるまで待機
   mode_G = 0;
-  timeInit_G = millis();
   timePrev_G=0;
-}
-
+  timeInit_G = millis();
 }
 
 void loop()
 {
+  timeUpdate();
+  dataUpdate();
+  delay(10);
 }
 
 
+void write1byteint(int x) {
+  Serial.write(x+128);
+}
 
+void write2byte(int x) {
+  Serial.write(x>>8);
+  Serial.write(x&255);
+}
 
+void dataUpdate(){
+
+  compass.read();
+  compass.m_min.x = min(compass.m.x,compass.m_min.x);  compass.m_max.x = max(compass.m.x,compass.m_max.x);
+  compass.m_min.y = min(compass.m.y,compass.m_min.y);  compass.m_max.y = max(compass.m.y,compass.m_max.y);
+  compass.m_min.z = min(compass.m.z,compass.m_min.z);  compass.m_max.z = max(compass.m.z,compass.m_max.z);
+  ax = compass.a.x/256; map(compass.a.x,-32768,32767,-128,127);
+  ay = compass.a.y/256; map(compass.a.y,-32768,32767,-128,127);
+  az = compass.a.z/256; map(compass.a.z,-32768,32767,-128,127);
+  mx = map(compass.m.x,compass.m_min.x,compass.m_max.x,-128,127);
+  my = map(compass.m.y,compass.m_min.y,compass.m_max.y,-128,127);
+  mz = map(compass.m.z,compass.m_min.z,compass.m_max.z,-128,127); 
+  Serial.write('H');
+  write1byteint((int)ax);
+  write1byteint((int)ay);
+  write1byteint((int)az);
+  write1byteint((int)mx);
+  write1byteint((int)my);
+  write1byteint((int)mz);
+  Serial.write(mode_G);
+}
+
+float sum_e = 0;
+float turnTo(float theta_r) {
+  float u;
+  float KP = 4.0;
+  float TIinv = 2/1000.0;
+  heading_G = atan2(my,mx) * 180 / M_PI;
+  if (heading_G<0) heading_G += 360;
+  float e = theta_r-heading_G;
+  if (e<-180) e+=360;
+  if (e>180)  e-=360;
+  if (abs(e) > 45.0 ) { // |e|>45のときはP制御
+    u = KP*e;           // P制御
+  } else {              // |e|<=45 の時はPI制御
+    sum_e += TIinv*e*(timeNow_G-timePrev_G);
+    u = KP*(e+sum_e);   // PI 制御
+  }
+  if ( u> 180 ) u = 180;  // 飽和
+  if ( u<-180 ) u = -180; // 飽和
+  return u;
+}
+
+/*
 // 通信方式２
 void sendData()
 {
@@ -63,3 +115,4 @@ void sendData()
     timePrev = timeNow_G;
   }
 }
+  */

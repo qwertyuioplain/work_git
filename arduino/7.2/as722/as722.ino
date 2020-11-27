@@ -15,7 +15,7 @@ float ax=0, ay=0, az=0;
 float heading_G = 0;
 int direction = 0;//ロボットの方向
 int direction_Int = 0;//ロボットの初期の方向
-int count = 0;
+int count = 0;>
 
 void setup()
 {

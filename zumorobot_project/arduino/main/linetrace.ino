@@ -1,3 +1,4 @@
+/*
 void linetrace_bang_bang()
 {
   static float lightMin = 80; // 各自で設定
@@ -107,3 +108,4 @@ int maintainState( unsigned long period )
   else
     return 0;
 }
+*/
