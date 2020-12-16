@@ -27,7 +27,7 @@ void setup()
   Wire.begin();
   setupCompass();
   button.waitForButton();//ホームボタン押されるまで待機
-  calibrationCompass();
+  calibrationCompass();//キャリブレーションによる最小値、最大値の取得
   button.waitForButton();//ホームボタン押されるまで待機
   mode_G = 0;
   timePrev_G=0;
@@ -38,6 +38,19 @@ void loop()
 {
   timeUpdate();
   dataUpdate();
+  switch (mode_G)
+  {
+  case 0://起動初期時点での処理
+    break;
+  case 1:
+
+    break;
+  
+  default:
+    break;
+  }
+
+
   delay(10);
 }
 
@@ -78,9 +91,9 @@ float turnTo(float theta_r) {
   float u;
   float KP = 4.0;
   float TIinv = 2/1000.0;
-  heading_G = atan2(my,mx) * 180 / M_PI;
+  heading_G = atan2(my,mx) * 180 / M_PI;//M_PI:円周率,今向いてる方角の角度を取得
   if (heading_G<0) heading_G += 360;
-  float e = theta_r-heading_G;
+  float e = theta_r-heading_G;//向いている方角の角度と向きたい方角の角度との差を取得
   if (e<-180) e+=360;
   if (e>180)  e-=360;
   if (abs(e) > 45.0 ) { // |e|>45のときはP制御
@@ -92,6 +105,24 @@ float turnTo(float theta_r) {
   if ( u> 180 ) u = 180;  // 飽和
   if ( u<-180 ) u = -180; // 飽和
   return u;
+}
+
+int waitfor( unsigned long period )
+{
+  static int flagStart = 0; // 0:待ち状態, 1:現在計測中
+  static unsigned long startTime = 0;
+
+  if ( flagStart == 0 ) {
+    startTime = timeNow_G;
+    flagStart = 1; // 現在計測中にしておく
+  }
+
+  if ( timeNow_G - startTime > period ) { // 計測開始からの経過時間が指定時間を超えた
+    flagStart = 0;  // 待ち状態に戻しておく
+    startTime = 0;  // なくてもよいが, 形式的に初期化
+    return 1;
+  }
+  return 0;
 }
 
 /*

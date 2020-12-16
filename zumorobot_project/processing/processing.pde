@@ -8,7 +8,7 @@ int mode_G;
 
 void setup() {
    size(1000,500);
-   port = new Serial(this, "/dev/ttyUSB0",9600);  // COM3 は各自の環境に合わせて修正せよ
+   port = new Serial(this, "/dev/ttyUSB0",9600);
    port.clear();
 }
 
@@ -18,7 +18,7 @@ void rotateViewPoint(float phi, float[] x) {
   float x0 = cphi*x[0]+sphi*x[1];
   float x1 = -sphi*x[0]+cphi*x[1];
   x[0] = x0;
-  x[1] = x1;>
+  x[1] = x1;
 }
 
 float[] X0 = new float[3];
