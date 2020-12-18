@@ -1,10 +1,9 @@
-/*
 void linetrace_bang_bang()
 {
-  static float lightMin = 80; // 各自で設定
+  static float lightMin = 90; // 各自で設定
   static float lightMax = 255; // 各自で設定
-  static float speed = 80; // パラメーター（各自で設定）
-  static float Kp = 0.8; // パラメーター（各自で設定）
+  static float speed = 100; // パラメーター（各自で設定）
+  static float Kp = 2.0; // パラメーター（各自で設定）
   float lightNow;
   float speedDiff;
 
@@ -17,49 +16,17 @@ void linetrace_bang_bang()
   motorR_G = speed + speedDiff;
 }
 
-
-void linetrace_P()
-{
-  static float lightMin = 85; // 各自で設定
-  static float lightMax = 255; // 各自で設定
-  static float speed = 100; // パラメーター（各自で設定）
-  static float Kp = 1.5; // パラメーター（各自で設定）
-  float lightNow;
-  float speedDiff;
-
-  lightNow = (red_G + green_G + blue_G ) / 3.0;
-  speedDiff = map(lightNow,lightMin,lightMax,-Kp * speed,Kp * speed);
-  motorL_G = speed - speedDiff;
-  motorR_G = speed + speedDiff;
-}
-
-void task_A_pre(){
-  switch ( mode_G ) {
-    case 0:
-      mode_G = 1;
-      break;
-    case 1:
-      linetrace_P(); // ライントレース
-      if ( identify_color( 200, 0, 0 ) ) { // 赤かどうか　（引数の値は各自で設定）
-        mode_G = 2;
-      }
-      break;
-    case 2:
-      motors.setSpeeds(0,0);
-      delay(1000);
-      mode_G = 3;
-      break;
-    case 3:
-      linetrace_P();
-      break;
-  }
-
-}
-
-void task_A()
+void colortask()
 {
   static unsigned long startTime; // static変数，時間計測ははunsigned long
   // この変数は1秒停止の開始時間を覚えておくために使用
+
+  if(button.isPressed() ){
+    mode_G = 0;
+    motors.setSpeeds(0, 0);
+    delay(200);
+    button.waitForButton();
+  }
 
   switch ( mode_G ) {
     case 0:
@@ -67,13 +34,41 @@ void task_A()
       break;  // break文を忘れない（忘れるとその下も実行される）
 
     case 1:
-      linetrace_P(); // ライントレース（各自で作成）
-      if ( identify_color( 255, 0, 0 ) ) { // 赤かどうか　（引数の値は各自で設定）
+      motorL_G = 100;
+      motorR_G = 100;
+      if ( identify_color( 184, 69, 75 ) || identify_color(47, 96, 165)) { // 赤かどうか　（引数の値は各自で設定）
         mode_G = 2;
+      }else if (identify_color(62, 85, 83)){//黒の場合
+        mode_G = 4;
+      }else if (identify_color(255,255,255)){//白の場合
+        mode_G = 1;
       }
       break;
 
-    // 各自で作成
+    case 2:
+      motorL_G = 0;
+      motorR_G = 0;
+      if(waitfor(1000)){
+        mode_G = 3;
+      } 
+      break;
+    case 3:
+      motorL_G = 100;
+      motorR_G = 100;
+      if (identify_color(62, 85, 83)){//黒の場合
+        mode_G = 4;
+      }else if(identify_color(255,255,255)){
+        mode_G = 1;
+      }
+      break;
+    
+    case 4:
+      motorL_G = 150;
+      motorR_G = -150;
+      if(waitfor(random(1000, 1700))) {
+        mode_G = 1;
+      }
+    break;
   }
 }
 
@@ -81,7 +76,7 @@ void task_A()
 int identify_color( int red, int green, int blue )
 {
   float d2;
-  float d2_max = 30; // パラメーター（各自で設定）
+  float d2_max = 20; // パラメーター（各自で設定）
 
   d2 = pow(red - red_G, 2) + pow(green - green_G, 2) + pow(blue - blue_G, 2);
   if ( d2 < d2_max * d2_max )
@@ -89,23 +84,3 @@ int identify_color( int red, int green, int blue )
   else
     return 0;
 }
-
-int maintainState( unsigned long period )
-{
-  static int flagStart = 0; // 0:待ち状態，1:現在計測中
-  static unsigned long startTime = 0;
-
-  if ( flagStart == 0 ) {
-    startTime = timeNow_G; // 計測を開始したtimeNow_Gの値を覚えておく
-    flagStart = 1; // 現在計測中にしておく
-  }
-
-  if ( timeNow_G - startTime > period ) { // 計測開始からの経過時間が指定時間を越えた
-    flagStart = 0; // 待ち状態に戻しておく
-    startTime = 0; // なくても良いが，形式的に初期化
-    return 1;
-  }
-  else
-    return 0;
-}
-*/

@@ -2,5 +2,5 @@
     "programmer": "ArduinoISP",
     "board": "arduino:avr:uno",
     "port": "/dev/ttyACM0",
-    "sketch": "zoomrobot_project/arduino/main.ino"
+    "sketch": "zoomrobot_project/integrate/integrate.ino"
 }

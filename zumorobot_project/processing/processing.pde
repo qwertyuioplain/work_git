@@ -107,6 +107,7 @@ void draw() {
   line(CX+scale*my,100-scale*mx,CX+0.6*scale*my-0.2*scale*mx,100-0.6*scale*mx-0.2*scale*my);
   text(mode_G,500,40);
 }
+
 int read1byteint(Serial p) {
   int x = p.read();
   x -= 128;
@@ -125,6 +126,7 @@ void serialEvent(Serial p) {
       ax = read1byteint(p);  ay = read1byteint(p);  az = read1byteint(p);
       mx = read1byteint(p);  my = read1byteint(p);  mz = read1byteint(p);
       mode_G = p.read();  //read1byteunsigned;
+      
 //      p.clear();
     }
   }
