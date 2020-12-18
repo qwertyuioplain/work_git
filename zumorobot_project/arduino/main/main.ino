@@ -9,17 +9,16 @@ Pushbutton button(ZUMO_BUTTON);
 LSM303 compass;
 
 //変数宣言
-unsigned long timeNow;
 unsigned long timeInit_G, timeNow_G, timePrev_G; //  スタート時間，経過時間, 1回前
 int motorR_G, motorL_G;  // 左右のZumoのモータに与える回転力
 int mode_G=0;
+float red_G,green_G,blue_G;//カラーセンサのRGB値
 float mx=0, my=0, mz=0;
 float ax=0, ay=0, az=0;
 float heading_G = 0;
 int direction = 0;//ロボットの方向
 int direction_Int = 0;//ロボットの初期の方向
 int count = 0;
-void dataUpdate();
 
 void setup()
 {
@@ -30,7 +29,9 @@ void setup()
   calibrationCompass();//キャリブレーションによる最小値、最大値の取得
   button.waitForButton();//ホームボタン押されるまで待機
   mode_G = 0;
-  timePrev_G=0;
+  motorR_G = 0;
+  motorL_G = 0;
+  timePrev_G = 0;
   timeInit_G = millis();
 }
 
@@ -54,6 +55,8 @@ void loop()
   delay(10);
 }
 
+void 
+
 
 void write1byteint(int x) {
   Serial.write(x+128);
@@ -64,8 +67,15 @@ void write2byte(int x) {
   Serial.write(x&255);
 }
 
+
+void timeUpdate(){
+  timeNow_G = millis() - timeInit_G; // 経過時間
+}
+
+
 void dataUpdate(){
 
+  //地磁気センサーの値を更新
   compass.read();
   compass.m_min.x = min(compass.m.x,compass.m_min.x);  compass.m_max.x = max(compass.m.x,compass.m_max.x);
   compass.m_min.y = min(compass.m.y,compass.m_min.y);  compass.m_max.y = max(compass.m.y,compass.m_max.y);
@@ -76,14 +86,6 @@ void dataUpdate(){
   mx = map(compass.m.x,compass.m_min.x,compass.m_max.x,-128,127);
   my = map(compass.m.y,compass.m_min.y,compass.m_max.y,-128,127);
   mz = map(compass.m.z,compass.m_min.z,compass.m_max.z,-128,127); 
-  Serial.write('H');
-  write1byteint((int)ax);
-  write1byteint((int)ay);
-  write1byteint((int)az);
-  write1byteint((int)mx);
-  write1byteint((int)my);
-  write1byteint((int)mz);
-  Serial.write(mode_G);
 }
 
 float sum_e = 0;
@@ -107,7 +109,7 @@ float turnTo(float theta_r) {
   return u;
 }
 
-int waitfor( unsigned long period )
+int waitfor( unsigned long period )//指定時間を超えると1を返す
 {
   static int flagStart = 0; // 0:待ち状態, 1:現在計測中
   static unsigned long startTime = 0;
@@ -125,7 +127,6 @@ int waitfor( unsigned long period )
   return 0;
 }
 
-/*
 // 通信方式２
 void sendData()
 {
@@ -138,12 +139,14 @@ void sendData()
     inByte = 1;
 
     Serial.write('H');
+    write1byteint((int)ax);
+    write1byteint((int)ay);
+    write1byteint((int)az);
+    write1byteint((int)mx);
+    write1byteint((int)my);
+    write1byteint((int)mz);
     Serial.write(mode_G);
-    Serial.write((int)red_G );
-    Serial.write((int)green_G );
-    Serial.write((int)blue_G );
-
+    
     timePrev = timeNow_G;
   }
 }
-  */
