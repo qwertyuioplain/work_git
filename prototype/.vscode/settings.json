@@ -3,7 +3,5 @@
 
     "python.condaPath": "/home/kk/anaconda3/envs/py36",//pathがあっているのか、意味があるのか正直不明、ここのpathのつなぎ方が調べたがわからないので断念
     "python.pythonPath": "/home/kk/anaconda3/envs/py36/bin/python3.6"//実行ファイルを指定するとデバックが簡単
-
-    //latexのビルド
     
 }
