@@ -1,0 +1,28 @@
+//anaconda
+
+conda create -n 'name' python='version'
+conda activate 
+conda deactivate
+conda info -e
+
+//linux
+ls
+cd
+touch 'name'
+rm -r 'name'
+rm -f 'name'
+echo
+expert
+
+//ssh
+
+//
+
+
+
+
+
+
+
+
+
