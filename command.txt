@@ -16,8 +16,16 @@ expert
 
 //ssh
 
+ssh user.name@address
+ssh kumakura@150.59.20.112
 
-//
+//sftp
+sftp user.name@address
+sftp kumakura@150.59.20.112
+
+! (command) ローカル操作
+get "name"
+-r ディレクトリ
 
 
 
