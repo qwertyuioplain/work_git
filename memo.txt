@@ -1,7 +1,18 @@
 memo
 
+image-server 
+
+150.59.20.114　メインサーバー
+150.59.20.111　サブサーバー
+150.59.20.113　外部公開用
+150.59.20.112  new pc server
+
 Atcoder 
 
 mask-Rcnn
+
+question
+
+ssh上でどうやってanacondaを動かすのか
 
 

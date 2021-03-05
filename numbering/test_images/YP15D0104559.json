@@ -1,0 +1,27 @@
+{
+  "version": "3.6.6",
+  "filename": "YP15D0104559.jpg",
+  "height": 1244,
+  "width": 2912,
+  "info": [
+    {
+      "org": "KDC",
+      "state": "done",
+      "editor": "y.hoshino",
+      "checker": "h.arai"
+    },
+    {
+      "org": "TU_Radiology",
+      "state": "done",
+      "editor": "needless",
+      "checker": "e.honda"
+    },
+    {
+      "org": "TU_KitaLab",
+      "state": "anon_check",
+      "editor": "needless",
+      "checker": "unknown"
+    }
+  ],
+  "shapes": []
+}
