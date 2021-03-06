@@ -35,6 +35,7 @@ for i in np.arange(len):
     if os.path.exists(test_data_path):
         if os.path.isfile(test_data_path):
             shutil.copy(test_data_path,os.path.join(image_dir_path,'rgb.jpg'))
+            shutil.copy(test_data_path,image_dir_path)
     if os.path.exists(os.path.join(image_dir_path,'rgb.jpg')):
         count +=1
 if count == len: print('successed copy') 

@@ -42,7 +42,7 @@ COCO_MODEL_PATH = os.path.join(ROOT_DIR, "/home/kumakura/hara_data/Teeth_Mask_RC
 #bt = joblib.load('/home/kumakura/hara_data/Teeth_Mask_RCNN_16class/numbering_program/numbering.pkl')#読み込み
 
 # Directory of images to run detection on
-IMAGE_DIR = os.path.join(ROOT_DIR, "test_images/teeth")
+#IMAGE_DIR = os.path.join(ROOT_DIR, "test_images/teeth")
 
 
 # ## Configurations
@@ -50,8 +50,7 @@ IMAGE_DIR = os.path.join(ROOT_DIR, "test_images/teeth")
 # We'll be using a model trained on the MS-COCO dataset. The configurations of this model are in the ```CocoConfig``` class in ```coco.py```.
 # 
 # For inferencing, modify the configurations a bit to fit the task. To do so, sub-class the ```CocoConfig``` class and override the attributes you need to change.
-
-# In[2]:
+# # In[2]:
 print(2)
 print('----------------------------------------------------------------')
 
@@ -107,8 +106,8 @@ class_names = ['undetected','1','2','3','4','5','6','7','8','11','12','13','14',
 class_names = np.array(class_names)
 colors= [[255,0,0],[0,255,0],[0,0,255],[255,255,0],[255,0,255],[0,255,255]]
 
-TEST_DIR = "./"
 # Load COCO dataset
+TEST_DIR = "./"
 dataset = teeth.TeethDataset()
 dataset.load_teeth(TEST_DIR, "test_image")
 dataset.prepare()
@@ -137,7 +136,9 @@ def csv_save(image_ids,test_list):
     for image_id in image_ids:
         print(image_id)
 
-        image = dataset.load_image(image_id)
+        #image = dataset.load_image(image_id)
+        image = skimage.io.imread(os.path.join('./test_image',str(image_id),'rgb.jpg'))
+        
         center = image.shape[1]/2
         results = model.detect([image],verbose=0)
         #results = model.detect([image], verbose=1)
@@ -176,10 +177,54 @@ def csv_save(image_ids,test_list):
         
         writer.writerows(list)
         
-        #plt.savefig('image/{}.png'.format(image_id),transparent=True, bbox_inches = 'tight', pad_inches = 0)
-        
-        #visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'],numbering_label)
+        visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'],numbering_label)
+        plt.savefig(os.path.join('./test_image',str(image_id),'{}.png').format(image_id),transparent=True, bbox_inches = 'tight', pad_inches = 0)
+        plt.close()
 
+
+def test(image_id,test_list):
+
+    print(image_id)
+    #image = dataset.load_image(image_id)
+    image = skimage.io.imread(os.path.join('./test_image',str(image_id),'rgb.jpg'))
+    center = image.shape[1]/2
+    results = model.detect([image],verbose=0)
+    #results = model.detect([image], verbose=1)
+    r = results[0]
+    # Visualize results
+
+    #pred_labels = bt.predict(r['rois']).astype('int')
+    
+    numbering_label = threshold_labeling(center,r['rois'],class_names[r['class_ids']])
+    n = len(numbering_label)
+    list = [[0 for i in range(7)]for j in range(len(numbering_label))]
+    #name
+    for i in range(n):
+        list[i][0] = test_list[image_id]
+    #x1
+    for i in range(n):
+        list[i][1] = r['rois'][i][1]
+    #y1
+    for i in range(n):
+        list[i][2] = r['rois'][i][0]
+    #x2
+    for i in range(n):
+        list[i][3] = r['rois'][i][3]
+    #y2
+    for i in range(n):
+        list[i][4] = r['rois'][i][2]
+    #numbering
+    for i in range(n):
+        list[i][5] = numbering_label[i]
+    #score     
+    for i in range(n):
+        list[i][6] = r['scores'][i]
+    
+    writer.writerows(list)
+    
+    visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'],numbering_label)
+    plt.savefig(os.path.join('./test_image',str(image_id),'{}.png').format(image_id),transparent=True, bbox_inches = 'tight', pad_inches = 0)
+    plt.close()
         
 
 f = open('./test_image/test_image_list.csv','r')
@@ -194,6 +239,8 @@ writer = csv.writer(f)
 
 image_ids = np.arange(200)
 csv_save(image_ids,test_list)
+
+#test(133,test_list)
+
 f.close()
-#np.savetxt('test_16cclass.csv',data,delimiter=',')
 
