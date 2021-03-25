@@ -1,3 +1,7 @@
+//cuda
+
+nvcc -v
+
 //anaconda
 
 conda create -n 'name' python='version'

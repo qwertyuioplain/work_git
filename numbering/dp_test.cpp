@@ -5,8 +5,8 @@ using namespace std;
 
 int	main(void)
 {
-	const int test_dentition[] = {47,46,45,44,43,42,31,31,32,37};
-	int	length = 10;
+	const int test_dentition[] = {47,46,45,44,43,42,31,31,31,32,37};
+	int	length = 11;
 	int	*renum;
 	TDP	dp;
 
