@@ -11,8 +11,4 @@ Atcoder
 
 mask-Rcnn
 
-question
-
-ssh上でどうやってanacondaを動かすのか
-
 
