@@ -1,0 +1,5 @@
+//資料リスト(url)置き場
+
+//論文の書き方
+https://ai-scholar.tech/articles/interview/recursive2
+

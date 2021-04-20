@@ -1,6 +1,15 @@
+//vpn関係のメモ
+
 vpnf.vait.tokushima-u.ac.jp
 
 vpn-c611801440-414488
 
 kRRTWRQ9
 
+image-server 
+
+150.59.20.114　メインサーバー
+150.59.20.111　サブサーバー
+150.59.20.113　外部公開用
+150.59.20.112  new pc server
+150.59.20.117  new pc server2(主に使うやつ)
