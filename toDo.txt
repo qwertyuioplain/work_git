@@ -1,0 +1,11 @@
+//to do list （今やりたいこと）
+
+nvidialink 
+ベンチマークテスト
+
+darknet
+
+Mask-RCNN(一から)
+
+研究テーマに関する論文を探してめも
+
