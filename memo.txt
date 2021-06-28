@@ -2,8 +2,25 @@ memo
 
 tensorflow に公式ベンチマークテストがある
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+150.59.20.114　メインサーバー
+150.59.20.111　サブサーバー
+150.59.20.113　外部公開用
+150.59.20.112  new pc server
+150.59.20.117  new pc server2 main
+
+
+
+=======
 cuda とcudnn　のversionを気を付ける　
 
 
+>>>>>>> 032fea87de11f6e4a753525664bebdb6cc47269b
+=======
+cuda とcudnn　のversionを気を付ける　
+
+
+>>>>>>> 032fea87de11f6e4a753525664bebdb6cc47269b
 
 
